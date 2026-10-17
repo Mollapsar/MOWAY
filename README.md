@@ -25,13 +25,20 @@ structure as a separate waypoint instead of collapsing them into one system-leve
 - Plan multi-stop EVE routes outside the game
 - Search solar systems, NPC stations, and character-visible player structures
 - Preserve exact station and player-structure destination IDs
+- Drag intermediate waypoints to set a manual order while keeping endpoints fixed
 - Optimize stop order for the lowest total stargate jump count
 - Keep the starting point fixed
 - Optionally keep the final destination fixed
 - Support up to 15 stops during exact automatic optimization
 - Send one route to multiple selected online characters
 - Skip offline characters without interrupting the others
+- Organize bound characters in custom folders
+- Add local notes to characters and drag them into any order
 - Save, load, and delete frequently used routes
+- Organize saved routes in custom folders
+- Drag routes to reorder them or move them between folders
+- Rename saved routes and route folders
+- Import or export a route-library file for sharing and backup recovery
 - Choose between planned-stop and jump-by-jump waypoint modes
 - Switch between dark and light themes
 - Switch between Chinese and English UI
@@ -56,6 +63,14 @@ The screenshots below use demonstration data only and contain no real character 
 #### Saved routes
 
 ![Saved routes](screenshots/en/02-saved-routes.png)
+
+### Documentation
+
+- [Features and User Guide — English](MOWAY-V0.9527-Features-and-User-Guide-EN.txt)
+- [Features and User Guide — Chinese](MOWAY-V0.9527-Features-and-User-Guide-CN.txt)
+- [Safety Notice — English](MOWAY-V0.9527-Safety-Notice-EN.txt)
+- [Safety Notice — Chinese](MOWAY-V0.9527-Safety-Notice-CN.txt)
+- [Changelog](CHANGELOG.md)
 
 ### Downloads
 
@@ -117,10 +132,33 @@ no password field and never reads the user's EVE password.
 4. Enter at least three characters to search for a location.
 5. Choose solar systems, NPC stations, or accessible player structures.
 6. Add any required intermediate stops.
-7. Select a route preference.
-8. Optionally enable automatic stop-order optimization.
-9. Calculate and review the route.
-10. Send it to the selected online characters.
+7. Optionally drag intermediate stops into a manual order.
+8. Select a route preference.
+9. Optionally enable automatic stop-order optimization.
+10. Calculate and review the route.
+11. Send it to the selected online characters.
+
+### Character Organization
+
+Navigation Characters can be grouped into custom folders and reordered with the drag handle.
+Use the pencil button to add, edit, or clear a local note. Deleting a character folder moves
+its characters to Unfiled Characters and does not remove their authorization.
+
+Character folders, notes, and ordering are stored only in `navigator-data.json`. They are not
+included in exported route-library files.
+
+### Route Library, Backup, and Sharing
+
+Saved routes can be organized in custom folders. Use the drag handle on a route card to
+change its order or move it into another folder. Routes and folders can both be renamed.
+
+**Export Library** creates a `.moway-routes.json` file containing saved routes, route folders,
+and their display order. It never includes character authorizations, character folders,
+character notes, refresh tokens, access tokens, the EVE Client ID, or contact information.
+
+**Import Routes** merges a valid MOWAY route-library file into the current library.
+Importing the same backup again updates matching route IDs instead of duplicating them.
+Player structures still require the receiving user's character to have access in EVE.
 
 ### Route Optimization
 
@@ -195,10 +233,10 @@ Read the included Chinese or English safety notice before using MOWAY.
 ### SHA-256
 
 ```text
-AF5F01056ADA8939797679ADDFCEE2631F0121571E40D49BA5DFAAC5CE0DED97
+DA4D68C4CF7DFB8012F1256A369FD2C1E36C8C63F9F9DF507367E743156856EB
 MOWAY-V0.9527-fast-folder.zip
 
-51307BBD08E25105F77A04B83791BD7D3B00FFB01DA7943B37DD3D2B1375CB0B
+4B203B810950C6EBD1FBBBAC15D35C2AB8B17223AFF600F31F805843ADB2D67B
 MOWAY-V0.9527-route-optimizer-portable.exe
 ```
 
@@ -232,13 +270,20 @@ MOWAY 可以在游戏外规划并优化多段路线、保存常用路线，并�
 - 在游戏外规划多段 EVE 路线
 - 联想搜索太阳系、NPC 空间站和角色可见的玩家建筑
 - 保留实际空间站和玩家建筑的精确目的地 ID
+- 拖动中间途经点手动调整顺序，同时保持起点和终点固定
 - 以总星门跳数最少为目标优化停靠顺序
 - 固定起点
 - 可选择是否固定终点
 - 精确自动优化最多支持 15 个节点
 - 将同一条路线批量写入多个已选择且在线的角色
 - 自动跳过离线角色，不影响其他角色继续处理
+- 使用自定义文件夹整理绑定角色
+- 为角色添加本机备注，并拖动调整角色顺序
 - 保存、载入和删除常用路线
+- 使用自定义文件夹归类路线
+- 拖动路线调整顺序，或将其移动到其他文件夹
+- 重命名路线和路线文件夹
+- 导入或导出路线库文件，用于分享、备份和恢复
 - 支持“仅写入规划停靠点”和“逐跳锁定完整路线”两种模式
 - 支持深色和白底主题
 - 支持中文与英文 UI 切换
@@ -263,6 +308,14 @@ MOWAY 可以在游戏外规划并优化多段路线、保存常用路线，并�
 #### 已保存路线
 
 ![已保存路线](screenshots/zh-CN/02-saved-routes.png)
+
+### 说明文档
+
+- [功能介绍与使用说明——中文](MOWAY-V0.9527-Features-and-User-Guide-CN.txt)
+- [功能介绍与使用说明——英文](MOWAY-V0.9527-Features-and-User-Guide-EN.txt)
+- [安全说明——中文](MOWAY-V0.9527-Safety-Notice-CN.txt)
+- [安全说明——英文](MOWAY-V0.9527-Safety-Notice-EN.txt)
+- [更新日志](CHANGELOG.md)
 
 ### 下载
 
@@ -323,10 +376,32 @@ MOWAY 使用 Authorization Code + PKCE。桌面 PKCE 应用不需要 Client Secr
 4. 输入至少三个字符搜索地点。
 5. 选择太阳系、NPC 空间站或角色可见的玩家建筑。
 6. 添加需要的途经点。
-7. 选择路线偏好。
-8. 按需启用自动优化停靠顺序。
-9. 计算并检查路线。
-10. 将路线写入已选择且在线的角色。
+7. 按需拖动中间途经点，设置手动顺序。
+8. 选择路线偏好。
+9. 按需启用自动优化停靠顺序。
+10. 计算并检查路线。
+11. 将路线写入已选择且在线的角色。
+
+### 角色整理
+
+“导航角色”支持自定义文件夹。使用角色左侧的拖动手柄可以调整顺序或移动到其他文件夹，
+使用铅笔按钮可以添加、修改或清除本机备注。删除角色文件夹只会把角色移到“未归类角色”，
+不会移除角色授权。
+
+角色文件夹、备注和排列顺序只保存在 `navigator-data.json`，不会进入路线库导出文件。
+
+### 路线库、备份与分享
+
+保存的路线可以放入自定义文件夹。拖动路线卡片上的手柄即可调整顺序，或把路线移动
+到其他文件夹。路线和文件夹均可重命名。
+
+“导出路线库”会生成一个 `.moway-routes.json` 文件，其中只包含已保存路线、路线文件夹和
+显示顺序，不包含角色授权、角色文件夹、角色备注、刷新令牌、访问令牌、EVE Client ID
+或联系方式。
+
+“导入路线”会把有效的 MOWAY 路线库文件合并到当前路线库。重复导入同一备份时，
+相同路线 ID 会被更新，不会反复产生副本。玩家建筑仍要求接收文件的用户角色在游戏
+中拥有相应访问权限。
 
 ### 路线优化
 
@@ -397,10 +472,10 @@ MOWAY 的本地数据目录为：
 ### SHA-256
 
 ```text
-AF5F01056ADA8939797679ADDFCEE2631F0121571E40D49BA5DFAAC5CE0DED97
+DA4D68C4CF7DFB8012F1256A369FD2C1E36C8C63F9F9DF507367E743156856EB
 MOWAY-V0.9527-fast-folder.zip
 
-51307BBD08E25105F77A04B83791BD7D3B00FFB01DA7943B37DD3D2B1375CB0B
+4B203B810950C6EBD1FBBBAC15D35C2AB8B17223AFF600F31F805843ADB2D67B
 MOWAY-V0.9527-route-optimizer-portable.exe
 ```
 
@@ -414,4 +489,5 @@ EVE Online、ESI 以及相关名称和商标归 CCP hf. 所有。
 **作者：** Mo Freeman  
 **版本：** V0.9527  
 **可能不会更新 V1.0。**
+
 
