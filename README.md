@@ -64,14 +64,6 @@ The screenshots below use demonstration data only and contain no real character 
 
 ![Saved routes](screenshots/en/02-saved-routes.png)
 
-### Documentation
-
-- [Features and User Guide — English](MOWAY-V0.9527-Features-and-User-Guide-EN.txt)
-- [Features and User Guide — Chinese](MOWAY-V0.9527-Features-and-User-Guide-CN.txt)
-- [Safety Notice — English](MOWAY-V0.9527-Safety-Notice-EN.txt)
-- [Safety Notice — Chinese](MOWAY-V0.9527-Safety-Notice-CN.txt)
-- [Changelog](CHANGELOG.md)
-
 ### Downloads
 
 #### Fast folder version — recommended
@@ -308,14 +300,6 @@ MOWAY 可以在游戏外规划并优化多段路线、保存常用路线，并�
 #### 已保存路线
 
 ![已保存路线](screenshots/zh-CN/02-saved-routes.png)
-
-### 说明文档
-
-- [功能介绍与使用说明——中文](MOWAY-V0.9527-Features-and-User-Guide-CN.txt)
-- [功能介绍与使用说明——英文](MOWAY-V0.9527-Features-and-User-Guide-EN.txt)
-- [安全说明——中文](MOWAY-V0.9527-Safety-Notice-CN.txt)
-- [安全说明——英文](MOWAY-V0.9527-Safety-Notice-EN.txt)
-- [更新日志](CHANGELOG.md)
 
 ### 下载
 
