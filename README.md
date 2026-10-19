@@ -1,5 +1,7 @@
 # MOWAY V0.9527
 
+![MOWAY V0.9527](MOWAY-V0.9527-promo.png)
+
 [English](#english) | [简体中文](#简体中文)
 
 <a id="english"></a>
