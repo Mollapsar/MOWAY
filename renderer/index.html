@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://images.evetech.net data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+    <title>MOWAY</title>
+    <link rel="stylesheet" href="./app.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div>
+            <strong>MOWAY</strong>
+            <small>NEW EDEN ROUTES</small>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="主导航" data-i18n-aria-label="nav.aria">
+          <button class="nav-item active" data-view="planner">
+            <span class="nav-icon">⌁</span><span data-i18n="nav.planner">路线规划</span>
+          </button>
+          <button class="nav-item" data-view="saved">
+            <span class="nav-icon">◇</span><span data-i18n="nav.saved">已保存路线</span><span class="nav-count" id="savedCount">0</span>
+          </button>
+          <button class="nav-item" data-view="pilots">
+              <span class="nav-icon">◉</span><span data-i18n="nav.pilots">导航角色</span><span class="nav-count" id="pilotCount">0</span>
+          </button>
+          <button class="nav-item" data-view="settings">
+            <span class="nav-icon">⚙</span><span data-i18n="nav.settings">设置与安全</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-security">
+          <span class="shield">✓</span>
+          <div><strong>本地加密</strong><small>令牌由 Windows 保护</small></div>
+        </div>
+        <div class="sidebar-foot"><span data-i18n="footer.line1">作者 Mo Freeman · 版本 V0.9527</span><br><span data-i18n="footer.line2">可能不会更新 V1.0</span></div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="viewEyebrow">ROUTE PLANNER</p>
+            <h1 id="viewTitle">规划你的航线</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="theme-toggle language-toggle" id="languageToggle" title="Switch to English">EN</button>
+            <button class="theme-toggle" id="themeToggle" title="切换深色 / 白底主题">☀ 白底</button>
+            <div class="connection-pill"><span></span>ESI Tranquility</div>
+            <button class="avatar-stack" id="pilotShortcut" aria-label="查看绑定角色" data-i18n-aria-label="pilots.viewBound"></button>
+          </div>
+        </header>
+
+        <section class="view active" id="view-planner">
+          <div class="planner-grid">
+            <section class="panel route-builder">
+              <div class="panel-heading">
+                <div><p class="kicker" data-i18n="planner.nodesKicker">01 · 航线节点</p><h2 data-i18n="planner.startQuestion">从哪里出发？</h2></div>
+                <button class="text-button" id="swapEndpoints" data-i18n="planner.swap">交换起终点</button>
+              </div>
+              <div id="stopList" class="stop-list"></div>
+              <button class="add-stop" id="addStop"><span>＋</span><span data-i18n="planner.addStop">添加途经点</span></button>
+
+              <div class="divider"></div>
+
+              <div class="panel-heading compact">
+                <div><p class="kicker" data-i18n="planner.preferenceKicker">02 · 路线偏好</p><h2 data-i18n="planner.arriveQuestion">如何抵达？</h2></div>
+              </div>
+              <div class="preference-grid" id="preferenceGrid">
+                <button class="preference-card active" data-preference="Shorter">
+                  <span class="preference-symbol">↗</span><strong data-i18n="preference.shorter">最短路线</strong><small data-i18n="preference.shorterNote">跳数优先</small>
+                </button>
+                <button class="preference-card" data-preference="Safer">
+                  <span class="preference-symbol">◈</span><strong data-i18n="preference.safer">更安全</strong><small data-i18n="preference.saferNote">偏好高安</small>
+                </button>
+                <button class="preference-card" data-preference="LessSecure">
+                  <span class="preference-symbol">⌄</span><strong data-i18n="preference.lessSecure">更危险</strong><small data-i18n="preference.lessSecureNote">偏好低安 / 零安</small>
+                </button>
+              </div>
+              <label class="range-row" id="penaltyRow">
+                <span><strong data-i18n="planner.securityWeight">安全权重</strong><small data-i18n="planner.securityWeightNote">数值越高，越倾向避开危险星系</small></span>
+                <input type="range" min="0" max="100" value="50" id="securityPenalty">
+                <output id="penaltyValue">50</output>
+              </label>
+
+              <div class="optimization-box">
+                <label class="optimization-toggle">
+                  <input type="checkbox" id="optimizeOrder">
+                  <span class="check-box">✓</span>
+                  <span><strong data-i18n="optimizer.title">自动优化停靠顺序</strong><small data-i18n="optimizer.note">固定起点，以总跳数最少为目标；推荐不超过 10 个，最多 15 个，节点越多等待越久</small></span>
+                </label>
+                <label class="optimization-toggle subordinate disabled" id="fixedDestinationRow">
+                  <input type="checkbox" id="fixedDestination" checked disabled>
+                  <span class="check-box">✓</span>
+                  <span><strong data-i18n="optimizer.fixedDestination">固定终点</strong><small data-i18n="optimizer.fixedDestinationNote">关闭后，原终点也会参与自动排序</small></span>
+                </label>
+              </div>
+
+              <button class="primary-button large" id="planRoute"><span data-i18n="planner.calculate">计算航线</span><span>→</span></button>
+              <p class="field-note" data-i18n="planner.searchNote">输入至少 3 个字符即可联想星系、NPC 空间站或角色可见的玩家建筑。</p>
+            </section>
+
+            <section class="panel route-preview empty" id="routePreview">
+              <div class="empty-state">
+                <div class="orbit-icon"><i></i><i></i><i></i></div>
+                <h2 data-i18n="preview.waiting">等待计算航线</h2>
+                <p data-i18n="preview.waitingNote">输入起点、终点与途经点后，路线会在这里展开。</p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-saved">
+          <div class="page-lead">
+            <div><p class="kicker">ROUTE LIBRARY</p><h2 data-i18n="saved.title">你的路线库</h2><p data-i18n="saved.note">载入常用航线，再按需写入在线角色。</p></div>
+            <div class="button-row route-library-actions">
+              <button class="secondary-button" id="importRouteLibrary" data-i18n="saved.import">导入路线</button>
+              <button class="secondary-button" id="exportRouteLibrary" data-i18n="saved.export">导出路线库</button>
+              <button class="primary-button compact-button" id="createRouteFolder" data-i18n="saved.createFolder">＋ 新建文件夹</button>
+            </div>
+          </div>
+          <div class="route-library" id="savedRoutes"></div>
+        </section>
+
+        <section class="view" id="view-pilots">
+          <div class="page-lead">
+              <div><p class="kicker">CHARACTER ACCESS</p><h2 data-i18n="pilots.title">导航角色</h2><p data-i18n="pilots.note">勾选要接收路线的角色；每个角色都需单独授权。</p></div>
+            <div class="button-row">
+              <button class="secondary-button" id="selectAllPilots" data-i18n="pilots.selectAll">全选</button>
+              <button class="secondary-button" id="clearPilots" data-i18n="pilots.clear">清空</button>
+              <button class="secondary-button" id="refreshPilots" data-i18n="pilots.refresh">刷新在线状态</button>
+              <button class="secondary-button" id="createCharacterFolder" data-i18n="pilots.createFolder">＋ 新建文件夹</button>
+              <button class="primary-button" id="bindPilot" data-i18n="pilots.bind">＋ 绑定角色</button>
+            </div>
+          </div>
+          <div class="security-callout">
+            <span class="shield large">✓</span>
+            <div><strong data-i18n="pilots.passwordTitle">你的密码不会进入本程序</strong><p data-i18n="pilots.passwordNote">登录发生在系统浏览器的 EVE 官方 SSO 页面；这里只保存 Windows 加密后的授权令牌。</p></div>
+          </div>
+          <div class="pilot-list" id="pilotList"></div>
+        </section>
+
+        <section class="view" id="view-settings">
+          <div class="settings-layout">
+            <section class="panel settings-card">
+              <p class="kicker">EVE SSO</p>
+              <h2 data-i18n="settings.title">应用配置</h2>
+              <p class="section-copy" data-i18n="settings.note">先在 EVE Developers 创建一个原生应用，再把公开的 Client ID 填到这里。不要填写 Client Secret。</p>
+              <label class="field-label" for="clientId">Client ID</label>
+              <input class="text-input" id="clientId" autocomplete="off" spellcheck="false" placeholder="粘贴 EVE 应用 Client ID" data-i18n-placeholder="settings.clientIdPlaceholder">
+              <label class="field-label" for="contact"><strong data-i18n="settings.contact">User-Agent 联系方式</strong> <span data-i18n="settings.recommended">建议填写</span></label>
+              <input class="text-input" id="contact" autocomplete="off" spellcheck="false" placeholder="邮箱或 Discord，例如 you@example.com" data-i18n-placeholder="settings.contactPlaceholder">
+              <label class="field-label" for="callbackUrl"><strong data-i18n="settings.callback">回调地址</strong> <span data-i18n="settings.exactMatch">必须逐字一致</span></label>
+              <div class="copy-field"><input class="text-input" id="callbackUrl" readonly><button id="copyCallback" data-i18n="settings.copy">复制</button></div>
+              <div class="button-row end">
+                <button class="secondary-button" id="openDevelopers" data-i18n="settings.openDevelopers">打开 EVE Developers</button>
+                <button class="primary-button" id="saveSettings" data-i18n="settings.save">保存配置</button>
+              </div>
+            </section>
+
+            <aside class="setup-steps">
+              <p class="kicker">SETUP GUIDE</p>
+              <h2 data-i18n="setup.title">注册步骤</h2>
+              <ol>
+                <li><span>1</span><div><strong data-i18n="setup.createTitle">创建应用</strong><p data-i18n="setup.createNote">类型选择 Authentication &amp; API Access。</p></div></li>
+                <li><span>2</span><div><strong data-i18n="setup.callbackTitle">填写回调</strong><p data-i18n="setup.callbackNote">复制左侧回调地址，不要修改端口。</p></div></li>
+                <li><span>3</span><div><strong data-i18n="setup.scopesTitle">最小权限</strong><p><code>esi-location.read_online.v1</code><br><code>esi-ui.write_waypoint.v1</code><br><code>esi-search.search_structures.v1</code><br><code>esi-universe.read_structures.v1</code></p></div></li>
+                <li><span>4</span><div><strong data-i18n="setup.saveTitle">保存 Client ID</strong><p data-i18n="setup.saveNote">桌面 PKCE 流程不使用 Client Secret。</p></div></li>
+              </ol>
+            </aside>
+          </div>
+
+          <section class="panel privacy-panel">
+            <div><p class="kicker">PRIVACY</p><h2 data-i18n="privacy.title">安全边界</h2></div>
+            <div class="privacy-grid">
+              <article><span>01</span><strong data-i18n="privacy.noPassword">无密码接触</strong><p data-i18n="privacy.noPasswordNote">应用不会读取、传输或保存 EVE 密码和浏览器 Cookie。</p></article>
+              <article><span>02</span><strong data-i18n="privacy.encrypted">本机加密</strong><p data-i18n="privacy.encryptedNote">刷新令牌经 Windows 安全存储加密，访问令牌仅驻留内存。</p></article>
+              <article><span>03</span><strong data-i18n="privacy.noCloud">无云同步</strong><p data-i18n="privacy.noCloudNote">角色绑定和保存路线只存放在本机应用数据目录。</p></article>
+              <article><span>04</span><strong data-i18n="privacy.revoke">可随时撤销</strong><p data-i18n="privacy.revokeNote">可在本程序移除角色，也可在 EVE 官方网站撤销授权。</p></article>
+            </div>
+            <div class="storage-path"><span data-i18n="privacy.storageLocation">本地数据位置：</span><code id="storageLocation">—</code></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+    <div class="modal-backdrop hidden" id="saveModal">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
+        <p class="kicker">SAVE ROUTE</p><h2 id="saveModalTitle" data-i18n="saveModal.title">保存这条航线</h2>
+        <label class="field-label" for="routeName" data-i18n="saveModal.name">路线名称</label>
+        <input class="text-input" id="routeName" maxlength="80">
+        <label class="field-label" for="routeFolder" data-i18n="saveModal.folder">保存到文件夹</label>
+        <select class="text-input select-input" id="routeFolder"></select>
+        <div class="button-row end"><button class="secondary-button" data-close-modal data-i18n="common.cancel">取消</button><button class="primary-button" id="confirmSave" data-i18n="common.save">保存</button></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="textPromptModal">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="textPromptTitle">
+        <p class="kicker">ROUTE LIBRARY</p><h2 id="textPromptTitle"></h2>
+        <label class="field-label" id="textPromptLabel" for="textPromptInput"></label>
+        <input class="text-input" id="textPromptInput" maxlength="120" autocomplete="off">
+        <div class="button-row end"><button class="secondary-button" id="cancelTextPrompt" data-i18n="common.cancel">取消</button><button class="primary-button" id="confirmTextPrompt"></button></div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "moway",
+  "version": "0.9527.0",
+  "description": "MOWAY — a privacy-first Windows route planner for EVE Online ESI.",
+  "main": "main.cjs",
+  "author": "Mo Freeman",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "pack:folder": "electron-builder --win dir --x64",
+    "pack:win": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "44.7.2",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "space.moway.navigator",
+    "productName": "MOWAY",
+    "artifactName": "MOWAY-${version}-portable.${ext}",
+    "directories": {
+      "output": "outputs"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "src/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "MOWAY-${version}-portable.${ext}"
+    }
+  }
+}

@@ -1,0 +1,171 @@
+MOWAY V0.9527
+Safety Notice (Author's Disclaimer)
+
+Author: Mo Freeman
+V1.0 may never happen
+
+============================================================
+IMPORTANT NOTICE
+============================================================
+
+This program was written entirely by AI. Its security is uncertain. Use it at your own risk.
+
+MOWAY has not received an independent professional security audit, penetration test, or
+long-term operational validation. No express or implied security guarantee is provided.
+
+MOWAY is not an official CCP product. EVE Online, ESI, and related names and marks belong
+to CCP hf. The user accepts responsibility for third-party software and account risks.
+
+============================================================
+1. What MOWAY Cannot Read or Do with Its Current Scopes
+============================================================
+
+MOWAY has no EVE password field. Credentials are entered only on the official EVE SSO page
+in your system browser.
+
+The four requested scopes cannot read your password, wallet, assets, mail, contacts,
+contracts, skills, market orders, ship's real-time location, or unapproved character data.
+They also cannot transfer ISK, trade, send mail, operate the market, fly a ship, or start
+autopilot.
+
+However, malware controlling your Windows account, browser, or entire computer may steal
+other data independently of MOWAY.
+
+============================================================
+2. Security Measures Used
+============================================================
+
+- Official EVE SSO is opened in the system browser.
+- Authorization Code + PKCE is used; no Client Secret is required.
+- The callback listens only on 127.0.0.1.
+- OAuth state, PKCE, JWT signature, issuer, audience, expiry, identity, and scopes are checked.
+- Only the four scopes required by current features are requested.
+- Refresh tokens are encrypted through Electron safeStorage and Windows protection.
+- Access tokens remain in process memory only.
+- CSP, context isolation, renderer sandboxing, and navigation restrictions are enabled.
+- Camera, microphone, location, and unrelated permissions are rejected.
+- Main-process actions accept calls only from the local MOWAY interface.
+- No author server, advertising, analytics, telemetry, or cloud synchronization is included.
+
+These measures reduce risk; they do not prove that the program is completely secure.
+
+============================================================
+3. Files Created on the Computer
+============================================================
+
+Main data directory:
+%APPDATA%\moway
+
+Most important file:
+%APPDATA%\moway\navigator-data.json
+
+It may contain the Client ID, User-Agent contact, callback URL, theme, UI language,
+character names and IDs, character folders, local notes, display order, granted scopes,
+character selection and status, saved routes,
+location IDs, route preferences, optimization results, and Windows-encrypted refresh tokens.
+
+Electron/Chromium may also create Cache, Code Cache, GPUCache, Network, Local Storage,
+Session Storage, Preferences, Local State, Shared Dictionary, and Crashpad files.
+Windows may create MOWAY crash dumps under %LOCALAPPDATA%\CrashDumps.
+
+The single-file portable version temporarily extracts files under %TEMP% while running.
+
+MOWAY creates a *.moway-routes.json file only when you explicitly choose Export Library.
+This file contains routes, route folders, ordering, location IDs, route preferences, and
+optimization results. It does not contain character bindings, character folders, character
+notes, access or refresh tokens, the Client ID, or your contact information. It may still reveal logistics routes, staging
+points, frequently used stations, and player-structure names, so share it deliberately.
+
+============================================================
+4. If Someone Obtains the Data
+============================================================
+
+With only navigator-data.json, a person can see character associations, character folders
+and notes, regular routes,
+stations, player structures, recent status, Client ID, and the contact you entered. This may
+reveal alternate characters, home areas, logistics routes, staging points, or activity patterns.
+
+Refresh tokens are not stored as plain text. Copying the file to a different computer or
+Windows user normally does not make it directly decryptable. Encryption is not an absolute
+guarantee: malware running as the same Windows user may be able to use local decryption.
+
+If an attacker obtains a valid refresh or access token, the current scopes may let them
+check whether a character is online, search visible player structures, read visible
+structure names and systems, and clear, add, or alter autopilot waypoints.
+
+Closing MOWAY, deleting the EXE, or removing a character locally does not replace official
+revocation. Revoke the third-party authorization through the official EVE account site.
+
+If someone obtains only an exported route-library file, they cannot use that file alone to
+take over a character authorization. They can still read its routes, folder names, locations,
+and ordering. Treat route-library files as shareable backups, not as privacy-free public data.
+
+============================================================
+5. Functional Risks
+============================================================
+
+- Sending a route clears that character's previous autopilot waypoints.
+- Selecting the wrong characters or places may write an unwanted route.
+- Optimization minimizes ESI stargate jumps and does not understand live tactical danger.
+- Different stations or structures in one system are preserved and written separately, but
+  their order cannot be optimized by in-system warp distance because they all cost zero gates.
+- Near 15 optimization stops, many ESI requests may be slow or rate-limited.
+- Changes to ESI, SSO, networking, certificates, or API rules may break functionality.
+- There is no automatic updater. An unmaintained version becomes riskier over time.
+- The EXE has no commercial code signature, so attackers can distribute a modified fake.
+
+============================================================
+6. What to Do After Suspected Token Theft
+============================================================
+
+1. On a trusted device, open the official EVE account management site.
+2. Revoke all MOWAY or corresponding Client ID third-party authorizations.
+3. Exit MOWAY completely.
+4. Delete %APPDATA%\moway.
+5. Run a complete malware scan and inspect remote-control software and browser extensions.
+6. Do not authorize again until malware has been ruled out.
+7. If passwords, email, or verification codes may also be exposed, change the relevant
+   passwords, review two-factor authentication, and contact official EVE support.
+
+Revocation is the key step that invalidates a stolen refresh token.
+
+============================================================
+7. Complete Local Removal
+============================================================
+
+1. Exit MOWAY and confirm that MOWAY.exe is not running in Task Manager.
+2. Revoke official third-party authorization first if tokens must be invalidated.
+3. Press Win+R, enter %APPDATA%, and delete the entire moway folder.
+4. Delete downloaded EXE and ZIP files, extracted folders, guides, and shortcuts.
+5. Empty the Recycle Bin if desired.
+6. If MOWAY crashed, delete only clearly named MOWAY .dmp files from
+   %LOCALAPPDATA%\CrashDumps.
+7. To remove sign-in traces, clear cookies, site data, cache, and history for
+   login.eveonline.com / eveonline.com in the browser used for authorization.
+8. After an abnormal portable-version exit, restart Windows and use the normal
+   Settings > System > Storage > Temporary files cleanup. Do not guess and bulk-delete
+   other applications' temporary directories.
+9. Delete the EVE Developer application only if it is no longer used. Deleting a shared
+   Client ID also disables it for friends.
+
+Normal users cannot guarantee removal of records independently retained by Windows,
+browsers, network equipment, security software, or CCP. Do not damage the registry,
+security logs, or system records in an attempt to become “completely traceless.”
+
+============================================================
+8. Never Share
+============================================================
+
+- Client Secret
+- navigator-data.json
+- The entire %APPDATA%\moway folder
+- Access or refresh tokens
+- A copy of your personal bound-character data
+- Configuration files containing a private email address or Discord contact
+
+Final reminder: this program was written entirely by AI. Its security is uncertain.
+Use it at your own risk.
+
+MOWAY V0.9527
+Author: Mo Freeman
+V1.0 may never happen

@@ -1,7 +1,5 @@
 # MOWAY V0.9527
 
-![MOWAY V0.9527](MOWAY-V0.9527-promo.png)
-
 [English](#english) | [简体中文](#简体中文)
 
 <a id="english"></a>
@@ -44,6 +42,26 @@ structure as a separate waypoint instead of collapsing them into one system-leve
 - Switch between Chinese and English UI
 - Keep all EVE character and location names in their original ESI form
 
+### Source Code and Building
+
+The repository contains the complete application source, automated tests, and the locked
+dependency list. It does not contain personal EVE credentials, user Client IDs, authorization
+tokens, local application data, or compiled dependencies.
+
+See [Building MOWAY from Source](BUILDING.md) for the verified Windows toolchain, test commands,
+portable-EXE build, fast-folder build, and checksum instructions. The project is distributed
+under the [MIT License](LICENSE).
+
+Useful review entry points:
+
+- `main.cjs` — Electron main process and privileged operations
+- `preload.cjs` — restricted IPC bridge exposed to the UI
+- `src/sso.cjs` — PKCE login and EVE token validation
+- `src/esi.cjs` — ESI requests, route planning, and waypoint delivery
+- `src/store.cjs` — local settings, routes, character metadata, and token protection
+- `src/ipc-security.cjs` — validation of requests from the packaged main interface
+- `tests/core.test.cjs` — 16 automated core tests
+
 ### Screenshots
 
 The screenshots below use demonstration data only and contain no real character or account information.
@@ -63,6 +81,14 @@ The screenshots below use demonstration data only and contain no real character 
 #### Saved routes
 
 ![Saved routes](screenshots/en/02-saved-routes.png)
+
+### Documentation
+
+- [Features and User Guide — English](MOWAY-V0.9527-Features-and-User-Guide-EN.txt)
+- [Features and User Guide — Chinese](MOWAY-V0.9527-Features-and-User-Guide-CN.txt)
+- [Safety Notice — English](MOWAY-V0.9527-Safety-Notice-EN.txt)
+- [Safety Notice — Chinese](MOWAY-V0.9527-Safety-Notice-CN.txt)
+- [Changelog](CHANGELOG.md)
 
 ### Downloads
 
@@ -281,6 +307,24 @@ MOWAY 可以在游戏外规划并优化多段路线、保存常用路线，并�
 - 支持中文与英文 UI 切换
 - EVE 角色和地点名称始终保留 ESI 返回的原文
 
+### 源代码与自行编译
+
+仓库包含完整程序源码、自动测试和锁定的依赖清单，不包含任何个人 EVE 登录信息、用户
+Client ID、授权令牌、本地程序数据或已经编译好的依赖。
+
+请阅读[从源码构建 MOWAY](BUILDING.md)，其中包含经过验证的 Windows 工具链、测试命令、
+单文件 EXE 构建、快速文件夹版构建以及校验值生成方法。项目采用 [MIT License](LICENSE)。
+
+建议进行安全审查时优先查看：
+
+- `main.cjs`——Electron 主进程和高权限操作
+- `preload.cjs`——提供给界面的受限 IPC 桥接
+- `src/sso.cjs`——PKCE 登录和 EVE 令牌验证
+- `src/esi.cjs`——ESI 请求、路线规划和路径点写入
+- `src/store.cjs`——本地设置、路线、角色信息和令牌保护
+- `src/ipc-security.cjs`——程序主界面请求来源校验
+- `tests/core.test.cjs`——16 项核心自动测试
+
 ### 界面截图
 
 以下截图仅使用演示数据，不包含任何真实角色或账号信息。
@@ -300,6 +344,14 @@ MOWAY 可以在游戏外规划并优化多段路线、保存常用路线，并�
 #### 已保存路线
 
 ![已保存路线](screenshots/zh-CN/02-saved-routes.png)
+
+### 说明文档
+
+- [功能介绍与使用说明——中文](MOWAY-V0.9527-Features-and-User-Guide-CN.txt)
+- [功能介绍与使用说明——英文](MOWAY-V0.9527-Features-and-User-Guide-EN.txt)
+- [安全说明——中文](MOWAY-V0.9527-Safety-Notice-CN.txt)
+- [安全说明——英文](MOWAY-V0.9527-Safety-Notice-EN.txt)
+- [更新日志](CHANGELOG.md)
 
 ### 下载
 
@@ -473,5 +525,4 @@ EVE Online、ESI 以及相关名称和商标归 CCP hf. 所有。
 **作者：** Mo Freeman  
 **版本：** V0.9527  
 **可能不会更新 V1.0。**
-
 

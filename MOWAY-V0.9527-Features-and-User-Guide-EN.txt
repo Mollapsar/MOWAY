@@ -1,0 +1,222 @@
+MOWAY V0.9527
+Features and User Guide
+
+Author: Mo Freeman
+V1.0 may never happen
+
+This program was written entirely by AI. Its security is uncertain. Use it at your own risk.
+For risks, local files, and complete removal instructions, read:
+MOWAY V0.9527 Safety Notice (Author's Disclaimer)
+
+============================================================
+1. What MOWAY Does
+============================================================
+
+MOWAY is a third-party Windows route planner for EVE Online.
+
+Its defining feature is batch delivery of optimized routes to multiple selected online
+characters while preserving exact NPC station and player structure waypoints. If several
+stops are in the same solar system, MOWAY does not collapse them into one system waypoint.
+It keeps and writes each structure or station ID separately. This addresses a limitation
+of ordinary system-level route planning, which cannot preserve multiple specific stations
+or structures in the same system during optimization.
+
+Main features:
+
+1. Plan multi-leg routes outside the game.
+2. Search suggestions for solar systems, NPC stations, and character-visible player structures.
+3. Write the actual station or structure as a waypoint instead of only its solar system.
+4. Optimize stop order for the lowest total stargate jump count.
+5. Keep the start fixed and optionally keep the destination fixed.
+6. Send one route to every selected and currently online bound character.
+7. Organize bound characters in custom folders, add local notes, and drag to reorder.
+8. Organize saved routes in custom folders, drag to reorder, and rename routes or folders.
+9. Import or export route-library files for sharing and backup recovery.
+10. Drag intermediate waypoints directly in the planner while keeping start and destination fixed.
+11. Dark and light themes, remembered locally.
+12. Chinese and English UI, remembered locally.
+
+Ten or fewer optimization stops are recommended. The exact optimizer supports up to
+15 stops. Near the limit, MOWAY may need many ESI route requests and can take longer.
+
+Different stations in the same solar system remain separate exact stops. They cost zero
+stargate jumps between each other, so optimization minimizes inter-system jumps and does
+not claim to determine the best in-system order by warp distance.
+
+The language switch affects MOWAY controls, help text, notifications, and error messages.
+Names received from ESI—including solar systems, NPC stations, player structures, and
+characters—are never translated and remain exactly as EVE returns them.
+
+============================================================
+2. Running MOWAY
+============================================================
+
+Fast folder version (recommended):
+
+1. Extract MOWAY-V0.9527-fast-folder.zip.
+2. Open the extracted MOWAY-V0.9527 folder.
+3. Double-click MOWAY.exe.
+
+Do not copy only MOWAY.exe out of the folder. It requires the DLL files, locale files,
+and resources folder beside it.
+
+The single-file portable EXE can run directly, but it normally starts more slowly because
+it extracts itself to a temporary location each time.
+
+System requirements: 64-bit Windows 10 or Windows 11, with access to EVE SSO and ESI.
+
+Use the EN / 中文 button in the upper-right corner to switch the UI language.
+
+============================================================
+3. Create and Configure an EVE SSO Application
+============================================================
+
+Open:
+https://developers.eveonline.com/applications
+
+Create an Authentication & API Access application.
+
+The callback URL must match exactly:
+http://127.0.0.1:17890/callback
+
+Add these four scopes:
+
+esi-location.read_online.v1
+esi-ui.write_waypoint.v1
+esi-search.search_structures.v1
+esi-universe.read_structures.v1
+
+Save the application, copy its public Client ID, and paste it into MOWAY under
+Settings & Security.
+
+The desktop PKCE sign-in flow does not use a Client Secret. Never enter or share a
+Client Secret. The 127.0.0.1 address is a fixed local loopback address, not your public
+IP address, so changing networks does not change it.
+
+============================================================
+4. Bind and Select Characters
+============================================================
+
+1. Open Navigation Characters.
+2. Click Bind Character.
+3. Sign in, choose a character, and authorize on the official EVE page in your browser.
+4. Return to MOWAY after the browser reports completion.
+5. Authorize each character separately.
+6. Turn on Use for navigation for every character that should receive routes.
+7. Create character folders, drag characters between them, and freely reorder characters.
+8. Use the pencil button beside a character to add, change, or clear a local note.
+
+Deleting a character folder does not remove authorization. Its characters move to Unfiled
+Characters. Character folders, order, and notes stay in navigator-data.json and are never
+included in exported route-library files.
+
+MOWAY has no password field. Your EVE login occurs only in the official EVE SSO page
+opened in your system browser.
+
+============================================================
+5. Plan and Optimize a Route
+============================================================
+
+1. Open Route Planner.
+2. Enter at least three characters.
+3. Select a solar system, NPC station, or player structure from the suggestions.
+4. Add any required waypoints.
+5. To set a manual order, drag the number beside an intermediate waypoint. The start and destination cannot be dragged.
+6. Choose Shortest, Safer, or Less secure.
+7. Turn on Optimize stop order if MOWAY should rearrange intermediate stops automatically.
+8. The start always stays fixed; choose whether the destination also stays fixed.
+9. Click Calculate Route and review the stop order, total jumps, and saved jumps.
+
+Editing or dragging a waypoint clears the previous calculation, so the changed route must
+be calculated again before it can be sent. This prevents an old route from being used by mistake.
+
+With optimization enabled, reduce the route to 15 stops or fewer. With optimization off,
+more manually ordered stops can be planned.
+
+Optimization uses ESI jump routes. It does not understand live gate camps, bubbles, wars,
+hostile groups, or tactical conditions. Review the route before sending it to characters.
+
+============================================================
+6. Send the Route to EVE
+============================================================
+
+Write planned stops only:
+Writes only the systems, stations, structures, and waypoints selected in the plan.
+This makes fewer ESI requests.
+
+Lock the complete route jump by jump:
+Writes every calculated jump in order. This makes more ESI requests and long routes take
+longer to process.
+
+Click Send to Selected Online Characters after reviewing the route. MOWAY processes only
+selected characters that are currently online. Offline characters are skipped, and a
+failure on one character does not stop the others.
+
+Writing a new route clears that character's existing autopilot waypoints. Verify both the
+route and selected characters first.
+
+============================================================
+7. Save and Share
+============================================================
+
+After calculation, click Save Route, enter a name, and optionally select a folder.
+
+In Saved Routes, you can:
+
+- Create, rename, or delete route folders.
+- Drag routes to reorder them or move them between folders.
+- Rename, load, send, or delete saved routes.
+- Export the complete route library.
+- Import a route library shared by another user or restore your own backup.
+
+The exported `.moway-routes.json` file contains only routes, route folders, and their display
+order. It does not contain character authorizations, character folders, character notes,
+refresh tokens, access tokens, the Client ID, or contact information, so this file can be
+shared with other users.
+
+Importing merges the file into the current library. Matching route IDs are updated instead
+of duplicated. Player structures still require the receiving user's character to have access in EVE.
+
+To share MOWAY with a friend, send:
+
+MOWAY-V0.9527-fast-folder.zip
+Optionally, the public Client ID
+
+A Client ID can be shared, but every person must authorize their own characters on the
+official EVE page.
+
+Never share a Client Secret, navigator-data.json, the AppData\moway folder, access tokens,
+refresh tokens, or a copy of your personal application data.
+
+============================================================
+8. Common Problems
+============================================================
+
+Slow startup:
+Use the extracted fast folder version instead of the single-file portable EXE.
+
+Unknown publisher warning:
+This release has no commercial code-signing certificate. Obtain it from a trusted source
+and verify its SHA-256 hash.
+
+No location suggestions:
+Enter at least three characters, bind a character, and grant all four scopes. A player
+structure must be visible to the character used for the search.
+
+No route appears on a character:
+Select Use for navigation, make sure the character is online and authorization is valid,
+then use Refresh Online Status.
+
+Authorization does not return:
+Confirm the callback URL is http://127.0.0.1:17890/callback, port 17890 is available,
+and no firewall, proxy, or security tool is blocking local loopback traffic.
+
+“A request outside the MOWAY main interface was rejected”:
+Exit every old MOWAY process, confirm no old MOWAY.exe remains in Task Manager, then
+extract and start the latest V0.9527 package without overwriting a running folder.
+
+============================================================
+
+MOWAY V0.9527
+Author: Mo Freeman
+V1.0 may never happen
